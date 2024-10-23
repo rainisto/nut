@@ -7,7 +7,7 @@ from nut import Config
 
 class FileEventHandler(RegexMatchingEventHandler):
 	def __init__(self):
-		super().__init__([r".*\.ns[pz]$", r".*\.xc[iz]$"])
+		super().__init__(regexes=[r".*\.ns[pz]$", r".*\.xc[iz]$"])
 
 	def on_created(self, event):
 		print('added: ' + event.src_path)

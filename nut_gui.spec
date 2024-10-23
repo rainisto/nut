@@ -2,12 +2,16 @@
 
 block_cipher = None
 
+from PyInstaller.utils.hooks import copy_metadata
+datas = []
+datas = copy_metadata('google-api-python-client')
+datas += [('public_html', 'public_html'), ('plugins', 'plugins')]
 
 a = Analysis(['nut_gui.py'],
              pathex=['nut', 'C:\\nut'],
              binaries=[('C:\\Windows\\System32\\libusb0.dll', '.')],
-             datas=[('public_html', 'public_html'), ('plugins', 'plugins')],
-             hiddenimports=['google-api-python-client'],
+             datas=datas,
+             hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

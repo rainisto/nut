@@ -164,9 +164,12 @@ def _load_nsp_filesize(json_title, nsp):
 	if 'fileSize' in json_title:
 		nsp.fileSize = json_title['fileSize']
 
-	if nsp.fileSize is None:
+	if nsp.fileSize is None or nsp.fileSize == 0:
 		_path = json_title['path']
-		Print.warning(f"Missing file size for `{_path}`. Trying to get size again...")
+		try:
+			Print.warning(f"Missing file size for `{_path}`. Trying to get size again...")
+		except Exception as e:
+			Print.warning(f"Unexpected error: {str(e)}")
 		_file_size = nsp.getFileSize()
 		if _file_size is None:
 			return False
@@ -205,8 +208,9 @@ class FileListCache: # pylint: disable=too-few-public-methods
 		parent = os.path.abspath(os.path.join(path, os.pardir))
 		if parent not in self.cache:
 			tmp = {}
-			for f in os.listdir(parent):
-				tmp[f] = f
+			if os.path.exists(parent):
+				for f in os.listdir(parent):
+					tmp[f] = f
 			self.cache[parent] = tmp
 
 		return os.path.basename(path) in self.cache[parent]

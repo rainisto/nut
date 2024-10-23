@@ -32,6 +32,9 @@ def initThread(app):
 def run():
 	urllib3.disable_warnings()
 
+	sys.stdin.reconfigure(encoding='utf-8')
+	sys.stdout.reconfigure(encoding='utf-8')
+
 	print(r'                        ,;:;;,')
 	print(r'                       ;;;;;')
 	print(r'               .=\',    ;:;;:,')
