@@ -23,7 +23,7 @@ from translator import tr
 class App(QWidget):
 	def __init__(self):
 		super().__init__()
-		self.title = 'NUT 3.3'
+		self.title = 'NUT 3.4 beta (23/10/2024 build)'
 		self.needsRefresh = False
 		self.isInitialized = False
 		self.initUI()

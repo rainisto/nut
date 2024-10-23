@@ -13,14 +13,15 @@ def init():
 	initialized = True
 	path = os.path.abspath(os.path.join(__file__, '../../plugins'))
 
-	for f in os.listdir(path):
-		try:
-			if not os.path.isfile(os.path.join(os.path.join(path, f), '__init__.py')) or os.path.isfile(os.path.join(os.path.join(path, f), 'disabled')):
-				continue
-			name = f
-			importlib.import_module('plugins.%s' % name)
-		except BaseException as e:
-			Print.error("plugin loader exception: %s" % str(e))
+	if os.path.exists(path):
+		for f in os.listdir(path):
+			try:
+				if not os.path.isfile(os.path.join(os.path.join(path, f), '__init__.py')) or os.path.isfile(os.path.join(os.path.join(path, f), 'disabled')):
+					continue
+				name = f
+				importlib.import_module('plugins.%s' % name)
+			except BaseException as e:
+				Print.error("plugin loader exception: %s" % str(e))
 	return True
 
 def register(name, func):
