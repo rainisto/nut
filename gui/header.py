@@ -17,6 +17,16 @@ def _get_ip_address():
 	except OSError:
 		return None
 
+def _get_ipv6_address():
+	s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+	try:
+		s.connect(("2001:db8::", 1027))
+		ip = s.getsockname()[0]
+		s.close()
+		return ip
+	except OSError:
+		return None
+
 def _create_button(app, parent, text, max_width, handler):
 	widget = QPushButton(text, app)
 	widget.setMaximumWidth(max_width)
@@ -53,13 +63,21 @@ class Header: # pylint: disable=too-many-instance-attributes,too-few-public-meth
 		top.addStretch()
 
 		ipAddr = _get_ip_address()
+		ipv6Addr = _get_ipv6_address()
 
-		if ipAddr:
-			self.serverInfo = QLabel(
-				f"<b>{tr('main.status.ip')}:</b>  {ipAddr}  <b>{tr('main.status.port')}:</b>  {Config.server.port}  " +
+		if ipAddr or ipv6Addr:
+			if Config.server.hostname == "::":
+				self.serverInfo = QLabel(
+				f"<b>{tr('main.status.ip')}v4:</b>  {ipAddr}  <b>{tr('main.status.ip')}v6:</b>  {ipv6Addr}  <b>{tr('main.status.port')}:</b>  {Config.server.port}  " +
 				f"<b>{tr('main.status.user')}:</b>  {Users.first().id}  <b>{tr('main.status.password')}:</b>  " +
 				f"{Users.first().password}"
-			)
+				)
+			else:
+				self.serverInfo = QLabel(
+					f"<b>{tr('main.status.ip')}:</b>  {ipAddr}  <b>{tr('main.status.port')}:</b>  {Config.server.port}  " +
+					f"<b>{tr('main.status.user')}:</b>  {Users.first().id}  <b>{tr('main.status.password')}:</b>  " +
+					f"{Users.first().password}"
+				)
 		else:
 			self.serverInfo = QLabel("<b>Offline</b>")
 

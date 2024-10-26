@@ -74,7 +74,10 @@ def run():
 	Print.info(time.asctime() + ' Server Starts - %s:%s' % (Config.server.hostname, Config.server.port))
 	try:
 		addr = (Config.server.hostname, Config.server.port)
-		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		if Config.server.hostname != "::":
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		else:
+			sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 		sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		sock.bind(addr)
 		sock.listen(5)
