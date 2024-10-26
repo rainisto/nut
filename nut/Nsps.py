@@ -205,13 +205,14 @@ class FileListCache: # pylint: disable=too-few-public-methods
 		self.cache = {}
 
 	def isfile(self, path):
-		parent = os.path.abspath(os.path.join(path, os.pardir))
-		if parent not in self.cache:
-			tmp = {}
-			if os.path.exists(parent):
-				for f in os.listdir(parent):
-					tmp[f] = f
-			self.cache[parent] = tmp
+		if os.path.exists(path):
+			parent = os.path.abspath(os.path.join(path, os.pardir))
+			if parent not in self.cache:
+				tmp = {}
+				if os.path.exists(parent):
+					for f in os.listdir(parent):
+						tmp[f] = f
+				self.cache[parent] = tmp
 
 		return os.path.basename(path) in self.cache[parent]
 
