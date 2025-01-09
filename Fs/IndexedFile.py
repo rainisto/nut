@@ -130,7 +130,10 @@ class IndexedFile:
 			if hasattr(self.title(), 'isUpdate') and self.title().isUpdate:
 				self.hasValidTicket = True
 				return
+		except OSError as e:
+			Print.error('failed to find tittleId: ' + str(e))
 
+		try:
 			self.hasValidTicket = (True if value and int(value) != 0 else False) or self.title().isUpdate
 		except BaseException:
 			pass
