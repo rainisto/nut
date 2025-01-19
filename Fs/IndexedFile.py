@@ -392,9 +392,13 @@ class IndexedFile:
 		if '{icr}' in format:
 			format = format.replace('{icr}', str(self.getCr(True)))
 
-		bn = os.path.basename(self.path)
-		if (not newName or len(newName) == 0) and not bn.upper().startswith(t.id.upper()):
-			Print.error('could not get new name for ' + bn)
+		try:
+			bn = os.path.basename(self.path)
+			if (not newName or len(newName) == 0) and not bn.upper().startswith(t.id.upper()):
+				Print.error('could not get new name for ' + bn)
+				return os.path.join(os.path.dirname(format), os.path.basename(self.path))
+		except Exception as e:
+			Print.error('could not get new name for ' + self.path + ' ' + str(e))
 			return os.path.join(os.path.dirname(format), os.path.basename(self.path))
 
 		baseName = self.cleanFilename(bt.getName() or '')
