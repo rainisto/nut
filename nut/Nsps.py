@@ -213,6 +213,9 @@ class FileListCache: # pylint: disable=too-few-public-methods
 					for f in os.listdir(parent):
 						tmp[f] = f
 				self.cache[parent] = tmp
+		else:
+			Print.error(f"File not found: {path}")
+			return False
 
 		return os.path.basename(path) in self.cache[parent]
 
